@@ -3,23 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fixed 800px Iframe Wrapper</title>
+  <title>Fixed Height Iframe with contentSize</title>
   <style>
-    /* Fixed height container */
     .iframe-container {
-      /* -webkit-overflow-scrolling: touch; */
+      -webkit-overflow-scrolling: touch;
       width: 360px;
-      height: 800px; /* Enforcing fixed 800px height */
+      height: 800px; /* Fixed height */
       overflow: hidden;
-      background:#00f;
-      position:fixed;
-      top:0;
-      left:0;
     }
-    /* Fixed height iframe */
     .iframe-container iframe {
       width: 100%;
-      height: 800px; /* Matching fixed height */
+      height: 100%; /* Matches container height */
       border: none;
       overflow: hidden;
     }
@@ -27,7 +21,7 @@
 </head>
 <body>
 
-<div class="iframe-container">
+<div class="iframe-container" id="outerContainer" contentSize="800px">
   <iframe id="dynamicIframe" scrolling="no" allowtransparency="true"></iframe>
 </div>
 
@@ -41,16 +35,9 @@
   const iframe = document.getElementById('dynamicIframe');
   const iframeSrc = getIframeSrc();
 
+  // Set iframe source to the specified URL with fixed 800px height
   if (iframeSrc) {
     iframe.src = iframeSrc;
-    // Set a fixed height contentSize attribute for iOS
-    iframe.onload = function() {
-      try {
-        iframe.contentWindow.document.body.setAttribute('contentSize', '800px');
-      } catch (e) {
-        console.log("Could not set contentSize; using fixed 800px height.");
-      }
-    };
   } else {
     console.error("No iframe URL provided in the query parameter.");
   }
