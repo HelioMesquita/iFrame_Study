@@ -31,13 +31,14 @@
 
 <!-- Outer container, unaffected by iframe loading -->
 <div class="outer-container">
-    <p>HELLOW</p>
-    <div class="iframe-container">
-        <iframe id="dynamicIframe" scrolling="no" allowtransparency="true"></iframe>
-      </div>
+  <p>Other content in the page goes here...</p>
 </div>
 
 <!-- Isolated iframe container -->
+<div class="iframe-container">
+  <iframe id="dynamicIframe" scrolling="no" allowtransparency="true"></iframe>
+</div>
+
 <script>
   // Function to retrieve the iframe URL from the query parameter
   function getIframeSrc() {
