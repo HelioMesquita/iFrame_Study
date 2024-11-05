@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dynamic Iframe Wrapper</title>
+  <title>Fixed Height Iframe Wrapper</title>
   <style>
     .iframe-container {
       -webkit-overflow-scrolling: touch;
@@ -25,6 +25,7 @@
 </div>
 
 <script>
+  // Function to retrieve the iframe source URL from the query parameter
   function getIframeSrc() {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('iframeUrl');
@@ -34,16 +35,9 @@
   const iframeSrc = getIframeSrc();
 
   if (iframeSrc) {
-    iframe.src = iframeSrc;
-    iframe.onload = function() {
-      try {
-        this.style.height = this.contentWindow.document.body.scrollHeight + 'px';
-      } catch (e) {
-        console.log("Unable to access iframe content height; defaulting to 800px.");
-      }
-    };
+    iframe.src = iframeSrc; // Set iframe source to the provided URL
   } else {
-    console.error("No iframe URL provided in query parameter.");
+    console.error("No iframe URL provided in the query parameter.");
   }
 </script>
 
