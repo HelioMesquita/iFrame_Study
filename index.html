@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fixed Height Iframe Wrapper</title>
+  <title>Fixed 800px Height Iframe Wrapper</title>
   <style>
     .iframe-container {
       -webkit-overflow-scrolling: touch;
       width: 360px;
-      overflow: auto;
+      height: 800px; /* Fixed height of 800px */
+      overflow: hidden;
     }
     .iframe-container iframe {
       width: 100%;
-      height: 800px;
+      height: 100%; /* Ensures iframe fills the container height */
       border: none;
       overflow: hidden;
     }
@@ -25,7 +26,7 @@
 </div>
 
 <script>
-  // Function to retrieve the iframe source URL from the query parameter
+  // Retrieve the iframe URL from the query parameter
   function getIframeSrc() {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('iframeUrl');
@@ -35,7 +36,7 @@
   const iframeSrc = getIframeSrc();
 
   if (iframeSrc) {
-    iframe.src = iframeSrc; // Set iframe source to the provided URL
+    iframe.src = iframeSrc; // Set the iframe source
   } else {
     console.error("No iframe URL provided in the query parameter.");
   }
