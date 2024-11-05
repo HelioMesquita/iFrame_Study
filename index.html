@@ -3,44 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Isolated Iframe Wrapper</title>
+  <title>Iframe Wrapper with contentSize</title>
   <style>
-
-    .outer-container {
-      width: 100px;
-      height: 800px;
-    }
-
-    /* Container for the isolated iframe */
     .iframe-container {
       -webkit-overflow-scrolling: touch;
       width: 360px;
-      height: 800px; /* Fixed 800px height */
       overflow: hidden;
     }
-    /* Styling for iframe */
     .iframe-container iframe {
       width: 100%;
-      height: 100%; /* Matches container height */
       border: none;
-      overflow: hidden;
     }
   </style>
 </head>
 <body>
 
-<!-- Outer container, unaffected by iframe loading -->
-<div class="outer-container">
-  <p>Other content in the page goes here...</p>
-</div>
-
-<!-- Isolated iframe container -->
-<div class="iframe-container">
+<div class="iframe-container" style="height:800px;" id="outerContainer">
   <iframe id="dynamicIframe" scrolling="no" allowtransparency="true"></iframe>
 </div>
 
 <script>
-  // Function to retrieve the iframe URL from the query parameter
   function getIframeSrc() {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('iframeUrl');
@@ -49,9 +31,22 @@
   const iframe = document.getElementById('dynamicIframe');
   const iframeSrc = getIframeSrc();
 
-  // Set the iframe source to the provided URL, ensuring isolation within its container
   if (iframeSrc) {
     iframe.src = iframeSrc;
+    
+    // Set contentSize for iOS compatibility after the iframe loads
+    iframe.onload = function() {
+      try {
+        const contentHeight = iframe.contentWindow.document.body.scrollHeight || 800;
+        iframe.style.height = contentHeight + 'px';
+        document.getElementById("outerContainer").style.height = contentHeight + 'px';
+
+        // Setting a contentSize attribute for iOS detection
+        iframe.contentWindow.document.body.setAttribute('contentSize', contentHeight + 'px');
+      } catch (e) {
+        console.log("Could not access iframe content, using default height.");
+      }
+    };
   } else {
     console.error("No iframe URL provided in the query parameter.");
   }
