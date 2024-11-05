@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Isolated Iframe Wrapper</title>
   <style>
+
+    .outer-container {
+      -webkit-overflow-scrolling: touch;
+      width: 360px;
+      height: 800px; /* Fixed 800px height */
+      overflow: hidden;
+    }
+
     /* Container for the isolated iframe */
     .iframe-container {
       -webkit-overflow-scrolling: touch;
