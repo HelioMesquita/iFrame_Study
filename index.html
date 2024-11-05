@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Iframe Wrapper</title>
+  <style>
+    .iframe-container {
+      -webkit-overflow-scrolling: touch;
+      width: 360px;
+      overflow: auto;
+    }
+    .iframe-container iframe {
+      width: 100%;
+      height: 800px;
+      border: none;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+
+<div class="iframe-container">
+  <iframe id="dynamicIframe" scrolling="yes" allowtransparency="true"></iframe>
+</div>
+
+<script>
+  function getIframeSrc() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('iframeUrl');
+  }
+
+  const iframe = document.getElementById('dynamicIframe');
+  const iframeSrc = getIframeSrc();
+
+  if (iframeSrc) {
+    iframe.src = iframeSrc;
+    iframe.onload = function() {
+      try {
+        this.style.height = this.contentWindow.document.body.scrollHeight + 'px';
+      } catch (e) {
+        console.log("Unable to access iframe content height; defaulting to 800px.");
+      }
+    };
+  } else {
+    console.error("No iframe URL provided in query parameter.");
+  }
+</script>
+
+</body>
+</html>
