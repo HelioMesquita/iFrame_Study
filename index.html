@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iOS iFrame Fix</title>
+  <title>iOS iFrame Fix with Override</title>
   <style>
     .iframe-container {
       -webkit-overflow-scrolling: touch;
@@ -19,15 +19,10 @@
 </head>
 <body>
   <div class="iframe-container">
-    <iframe id="dynamicIframe" allowtransparency="true" scrolling="yes" onload="resizeIframe()"></iframe>
+    <iframe id="dynamicIframe" allowtransparency="true" scrolling="yes" onload="injectStyles()"></iframe>
   </div>
 
   <script>
-    // Function to resize iframe height
-    function resizeIframe() {
-      document.getElementById('dynamicIframe').style.height = '800px';
-    }
-
     // Get the iframeUrl from URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const iframeUrl = urlParams.get('iframeUrl');
@@ -36,6 +31,28 @@
       document.getElementById('dynamicIframe').src = iframeUrl;
     } else {
       document.body.innerHTML = "<p>Error: No iframe URL provided.</p>";
+    }
+
+    // Inject styles and resizing script into the iframe
+    function injectStyles() {
+      const iframe = document.getElementById('dynamicIframe');
+      iframe.contentWindow.document.body.style.overflow = 'auto';
+
+      // Apply height and any additional necessary styles
+      iframe.contentWindow.document.body.innerHTML += `
+        <style>
+          body {
+            -webkit-overflow-scrolling: touch;
+            overflow: auto !important;
+            width: 100%;
+          }
+        </style>
+        <script>
+          window.onload = function() {
+            document.body.style.height = '800px';
+          };
+        </script>
+      `;
     }
   </script>
 </body>
