@@ -1,10 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fixed Height iFrame</title>
-  <style>
+<style>
     .iframe-container {
       -webkit-overflow-scrolling: touch;
       width: 360px;
@@ -18,10 +13,6 @@
       overflow: hidden;
     }
   </style>
-</head>
-<body>
   <div class="iframe-container">
     <iframe id="dynamicIframe" allowtransparency="true" scrolling="no" src="https://ehub.htvapps.com/kcci/wp-json/election-hub/v1/iframe-embed/373" onload="this.style.height = '800px'"></iframe>
   </div>
-</body>
-</html>
