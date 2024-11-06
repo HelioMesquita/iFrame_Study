@@ -2,56 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Fixed Square Iframe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Embedded Iframe with Fixed Height</title>
   <style>
-    /* Outer fixed square container */
-    .square-container {
-      width: 800px;
-      height: 800px; /* Fixed square dimensions */
-      display: flex;
-      overflow: hidden;
+    /* Container for the iframe with overflow control */
+    .iframe-container {
+      -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+      width: 360px; /* Fixed width */
+      height: 800px; /* Fixed height */
+      overflow: auto; /* Enable scrolling if content exceeds container */
       border: 1px solid #ccc;
       box-sizing: border-box;
     }
 
-    /* Inner iframe styling to fill the square */
-    iframe {
-      width: 100%;
-      height: 800;
-      border: none;
+    /* Iframe takes full width of the container */
+    .iframe-container iframe {
+      width: 100%; /* Full width of container */
+      height: 100%; /* Full height of container */
+      border: none; /* No border around iframe */
+      overflow: hidden; /* Hide overflow */
     }
   </style>
 </head>
 <body>
 
-<div id="square-container" class="square-container"></div>
-
-<script>
-  // Function to get the iframe URL from the query parameter
-  function getIframeSrc() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('iframeUrl');
-  }
-
-  const iframeSrc = getIframeSrc();
-  
-  if (iframeSrc) {
-    const container = document.getElementById("square-container");
-
-    // Create a shadow root to isolate iframe rendering
-    const shadow = container.attachShadow({ mode: 'open' });
-    
-    // Create and append the iframe within the shadow DOM
-    const iframe = document.createElement('iframe');
-    iframe.src = iframeSrc;
-    iframe.allowTransparency = true;
-    iframe.scrolling = "no";
-
-    shadow.appendChild(iframe);  // Append the iframe into the shadow DOM
-  } else {
-    console.error("No iframe URL provided in the query parameter.");
-  }
-</script>
+<div class="iframe-container">
+  <iframe 
+    src="https://ehub.htvapps.com/koco/wp-json/election-hub/v1/iframe-embed/1731"
+    scrolling="yes" 
+    allowtransparency="true">
+  </iframe>
+</div>
 
 </body>
 </html>
