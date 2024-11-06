@@ -15,12 +15,13 @@
       width: 100%;
       height: 800px; /* Set a fixed height */
       border: none;
+      overflow: hidden;
     }
   </style>
 </head>
 <body>
   <div class="iframe-container">
-    <iframe id="dynamicIframe" allowtransparency="true" scrolling="no" src="https://ehub.htvapps.com/kcci/wp-json/election-hub/v1/iframe-embed/373"></iframe>
+    <iframe id="dynamicIframe" allowtransparency="true" scrolling="no" src="https://ehub.htvapps.com/kcci/wp-json/election-hub/v1/iframe-embed/373" onload="this.style.height = '800px'"></iframe>
   </div>
 </body>
 </html>
