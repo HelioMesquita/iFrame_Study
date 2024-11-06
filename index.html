@@ -3,36 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Embedded Iframe with Fixed Height</title>
+  <title>iOS iFrame Fix</title>
   <style>
-    /* Container for the iframe with overflow control */
     .iframe-container {
-      -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-      width: 360px; /* Fixed width */
-      height: 800px; /* Fixed height */
-      overflow: auto; /* Enable scrolling if content exceeds container */
-      border: 1px solid #ccc;
-      box-sizing: border-box;
+      -webkit-overflow-scrolling: touch;
+      width: 360px;
+      overflow: auto;
     }
-
-    /* Iframe takes full width of the container */
-    .iframe-container iframe {
-      width: 100%; /* Full width of container */
-      height: 100%; /* Full height of container */
-      border: none; /* No border around iframe */
-      overflow: hidden; /* Hide overflow */
+    iframe {
+      width: 100%;
+      border: none;
+      overflow: hidden;
     }
   </style>
 </head>
 <body>
+  <div class="iframe-container">
+    <iframe id="dynamicIframe" allowtransparency="true" scrolling="yes" onload="resizeIframe()"></iframe>
+  </div>
 
-<div class="iframe-container">
-  <iframe 
-    src="https://ehub.htvapps.com/koco/wp-json/election-hub/v1/iframe-embed/1731"
-    scrolling="yes" 
-    allowtransparency="true">
-  </iframe>
-</div>
+  <script>
+    // Function to resize iframe height
+    function resizeIframe() {
+      document.getElementById('dynamicIframe').style.height = '800px';
+    }
 
+    // Get the iframeUrl from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const iframeUrl = urlParams.get('iframeUrl');
+
+    if (iframeUrl) {
+      document.getElementById('dynamicIframe').src = iframeUrl;
+    } else {
+      document.body.innerHTML = "<p>Error: No iframe URL provided.</p>";
+    }
+  </script>
 </body>
 </html>
