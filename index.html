@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iOS iFrame Fix with Override</title>
+  <title>iOS iFrame Fixed Height</title>
   <style>
     .iframe-container {
       -webkit-overflow-scrolling: touch;
@@ -12,6 +12,7 @@
     }
     iframe {
       width: 100%;
+      height: 800px; /* Set fixed height */
       border: none;
       overflow: hidden;
     }
@@ -31,37 +32,13 @@
       const iframe = document.getElementById('dynamicIframe');
       iframe.src = iframeUrl;
 
-      // Listen for the iframe to load
+      // Set height to 800px on load as a fixed value
       iframe.onload = function() {
-        try {
-          // Attempt to set styles directly, which may be restricted cross-origin
-          const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-          if (iframeDocument) {
-            iframeDocument.body.style.overflow = 'auto';
-            iframeDocument.body.style.height = '800px';
-
-            // Additional CSS if needed
-            const style = iframeDocument.createElement('style');
-            style.textContent = 'body { -webkit-overflow-scrolling: touch; overflow: auto !important; }';
-            iframeDocument.head.appendChild(style);
-          }
-        } catch (error) {
-          // If cross-origin, use postMessage as a fallback
-          iframe.contentWindow.postMessage({ height: 800, overflow: 'auto' }, '*');
-        }
+        iframe.style.height = '800px';
       };
     } else {
       document.body.innerHTML = "<p>Error: No iframe URL provided.</p>";
     }
-
-    // Listen for message events (on the iframe's side, implement a handler to listen for height setting)
-    window.addEventListener("message", function(event) {
-      if (event.data && event.data.height) {
-        const iframe = document.getElementById('dynamicIframe');
-        iframe.style.height = event.data.height + 'px';
-        iframe.style.overflow = event.data.overflow;
-      }
-    }, false);
   </script>
 </body>
 </html>
