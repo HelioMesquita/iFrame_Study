@@ -7,43 +7,50 @@
   <style>
     /* Outer fixed square container */
     .square-container {
-      width: 100%;
+      width: 800px;
       height: 800px; /* Fixed square dimensions */
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      border: 1px solid #ccc;
       box-sizing: border-box;
-      background-color: red;
     }
 
-    /* Inner iframe set to fill the square */
-    .square-container iframe {
+    /* Inner iframe styling to fill the square */
+    iframe {
       width: 100%;
-      height: 800;
+      height: 100%;
       border: none;
     }
   </style>
 </head>
 <body>
 
-<div class="square-container">
-  <iframe id="dynamicIframe" scrolling="no" allowtransparency="true"></iframe>
-</div>
+<div id="square-container" class="square-container"></div>
 
 <script>
-  // Retrieve the iframe URL from the query parameter
+  // Function to get the iframe URL from the query parameter
   function getIframeSrc() {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('iframeUrl');
   }
 
-  const iframe = document.getElementById('dynamicIframe');
   const iframeSrc = getIframeSrc();
-
-  // Set iframe source if the URL is provided
+  
   if (iframeSrc) {
+    const container = document.getElementById("square-container");
+
+    // Create a shadow root to isolate iframe rendering
+    const shadow = container.attachShadow({ mode: 'open' });
+    
+    // Create and append the iframe within the shadow DOM
+    const iframe = document.createElement('iframe');
     iframe.src = iframeSrc;
+    iframe.allowTransparency = true;
+    iframe.scrolling = "no";
+
+    shadow.appendChild(iframe);  // Append the iframe into the shadow DOM
   } else {
     console.error("No iframe URL provided in the query parameter.");
   }
