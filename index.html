@@ -19,7 +19,7 @@
 </head>
 <body>
   <div class="iframe-container">
-    <iframe id="dynamicIframe" allowtransparency="true" scrolling="yes" onload="injectStyles()"></iframe>
+    <iframe id="dynamicIframe" allowtransparency="true" scrolling="yes"></iframe>
   </div>
 
   <script>
@@ -28,32 +28,40 @@
     const iframeUrl = urlParams.get('iframeUrl');
 
     if (iframeUrl) {
-      document.getElementById('dynamicIframe').src = iframeUrl;
+      const iframe = document.getElementById('dynamicIframe');
+      iframe.src = iframeUrl;
+
+      // Listen for the iframe to load
+      iframe.onload = function() {
+        try {
+          // Attempt to set styles directly, which may be restricted cross-origin
+          const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+          if (iframeDocument) {
+            iframeDocument.body.style.overflow = 'auto';
+            iframeDocument.body.style.height = '800px';
+
+            // Additional CSS if needed
+            const style = iframeDocument.createElement('style');
+            style.textContent = 'body { -webkit-overflow-scrolling: touch; overflow: auto !important; }';
+            iframeDocument.head.appendChild(style);
+          }
+        } catch (error) {
+          // If cross-origin, use postMessage as a fallback
+          iframe.contentWindow.postMessage({ height: 800, overflow: 'auto' }, '*');
+        }
+      };
     } else {
       document.body.innerHTML = "<p>Error: No iframe URL provided.</p>";
     }
 
-    // Inject styles and resizing script into the iframe
-    function injectStyles() {
-      const iframe = document.getElementById('dynamicIframe');
-      iframe.contentWindow.document.body.style.overflow = 'auto';
-
-      // Apply height and any additional necessary styles
-      iframe.contentWindow.document.body.innerHTML += `
-        <style>
-          body {
-            -webkit-overflow-scrolling: touch;
-            overflow: auto !important;
-            width: 100%;
-          }
-        </style>
-        <script>
-          window.onload = function() {
-            document.body.style.height = '800px';
-          };
-        </script>
-      `;
-    }
+    // Listen for message events (on the iframe's side, implement a handler to listen for height setting)
+    window.addEventListener("message", function(event) {
+      if (event.data && event.data.height) {
+        const iframe = document.getElementById('dynamicIframe');
+        iframe.style.height = event.data.height + 'px';
+        iframe.style.overflow = event.data.overflow;
+      }
+    }, false);
   </script>
 </body>
 </html>
