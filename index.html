@@ -3,44 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iOS iFrame Dynamic Height Adjustment</title>
+  <title>Fixed Height iFrame</title>
   <style>
     .iframe-container {
       -webkit-overflow-scrolling: touch;
       width: 360px;
-      height: 800px;
       overflow: auto;
     }
     iframe {
       width: 100%;
+      height: 800px; /* Set a fixed height */
       border: none;
-      overflow: hidden;
     }
   </style>
 </head>
 <body>
   <div class="iframe-container">
-    <iframe id="dynamicIframe" allowtransparency="true" scrolling="yes"></iframe>
+    <iframe id="dynamicIframe" allowtransparency="true" scrolling="yes" src="https://ehub.htvapps.com/kcci/wp-json/election-hub/v1/iframe-embed/373"></iframe>
   </div>
-
-  <script>
-    // Get the iframeUrl from URL parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const iframeUrl = urlParams.get('iframeUrl');
-
-    if (iframeUrl) {
-      const iframe = document.getElementById('dynamicIframe');
-      iframe.src = iframeUrl;
-
-      // Listen for height messages from the iframe
-      window.addEventListener("message", function(event) {
-        if (event.data && event.data.height) {
-          iframe.style.height = event.data.height + 'px';
-        }
-      }, false);
-    } else {
-      document.body.innerHTML = "<p>Error: No iframe URL provided.</p>";
-    }
-  </script>
 </body>
 </html>
